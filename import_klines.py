@@ -18,7 +18,7 @@ DB_CONFIG = {
     "password": "",
 }
 
-CSV_DIRECTORY = "./data/btcusdt_1m"
+CSV_DIRECTORY = "./data"
 TABLE_NAME = "btcusdt_1m"
 BATCH_SIZE = 10000  # Insert rows in batches for performance
 # =======================================
