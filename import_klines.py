@@ -4,6 +4,7 @@ Import Binance BTCUSDT 1m kline CSV files into TimescaleDB
 """
 
 import os
+import re
 import glob
 import psycopg2
 from psycopg2.extras import execute_values
@@ -79,9 +80,13 @@ def parse_csv_row(row):
     if len(parts) != 12:
         return None
     
-    # Convert milliseconds timestamp to datetime
-    open_time = datetime.utcfromtimestamp(int(parts[0]) / 1000)
-    close_time = datetime.utcfromtimestamp(int(parts[6]) / 1000)
+    # Detect timestamp format: microseconds (16 digits) vs milliseconds (13 digits)
+    open_ts = int(parts[0])
+    close_ts = int(parts[6])
+    divisor = 1_000_000 if open_ts > 9_999_999_999_999 else 1_000
+    
+    open_time = datetime.utcfromtimestamp(open_ts / divisor)
+    close_time = datetime.utcfromtimestamp(close_ts / divisor)
     
     return (
         open_time,           # open_time
@@ -131,6 +136,22 @@ def import_csv_file(conn, filepath):
     return len(rows)
 
 
+def get_latest_date(conn):
+    """Get the latest date already in the database"""
+    with conn.cursor() as cur:
+        cur.execute(f"SELECT MAX(open_time)::date FROM {TABLE_NAME};")
+        result = cur.fetchone()[0]
+        return result
+
+
+def extract_date_from_filename(filename):
+    """Extract date from filename like BTCUSDT-1m-2025-01-01.csv"""
+    match = re.search(r'(\d{4}-\d{2}-\d{2})\.csv$', filename)
+    if match:
+        return datetime.strptime(match.group(1), '%Y-%m-%d').date()
+    return None
+
+
 def main():
     print("=" * 50)
     print("Binance Kline CSV → TimescaleDB Importer")
@@ -155,9 +176,22 @@ def main():
         conn.close()
         return
     
+    # Get latest date in database
+    latest_date = get_latest_date(conn)
+    if latest_date:
+        print(f"✓ Latest data in DB: {latest_date}")
+    else:
+        print("✓ Database is empty, importing all files")
+    
     # Find all CSV files
     csv_pattern = os.path.join(CSV_DIRECTORY, "*.csv")
     csv_files = sorted(glob.glob(csv_pattern))
+    
+    # Filter to only files newer than latest date
+    if latest_date:
+        csv_files = [f for f in csv_files 
+                     if (d := extract_date_from_filename(f)) and d > latest_date]
+        print(f"✓ {len(csv_files)} new files to import")
     
     if not csv_files:
         print(f"\n✗ No CSV files found in {CSV_DIRECTORY}")

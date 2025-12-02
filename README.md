@@ -29,6 +29,7 @@ Each CSV row contains:
 ### macOS (Homebrew)
 
 ```bash
+brew tap timescale/tap
 brew install postgresql@17 timescaledb
 ```
 
