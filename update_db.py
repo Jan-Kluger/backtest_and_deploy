@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Download new BTCUSDT 1m kline data from Binance and import into TimescaleDB
+Download BTCUSDT USD-M futures data from Binance and import into TimescaleDB
 """
 
 import os
@@ -10,19 +10,40 @@ import zipfile
 import subprocess
 import requests
 import xml.etree.ElementTree as ET
-from time import sleep
-from datetime import datetime
+from datetime import datetime, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# ============ CONFIGURATION ============
+SYMBOL = "BTCUSDT"
+INTERVAL = "1m"
 BASE = "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision"
-PREFIX = "data/spot/daily/klines/BTCUSDT/1m/"
+BASE_DATA_DIR = "./data"
 NS = "{http://s3.amazonaws.com/doc/2006-03-01/}"
-DATA_DIR = "./data"
 CHUNK = 1024 * 1024
 
+# Only download data from the last N months
+MONTHS_OF_DATA = 6
+MIN_DATE = (datetime.now() - timedelta(days=MONTHS_OF_DATA * 30)).date()
 
-def get_latest_local_date():
-    """Get the latest date from existing CSV files"""
-    csv_files = glob.glob(os.path.join(DATA_DIR, "BTCUSDT-1m-*.csv"))
+# Essential datasets for backtesting (can't be derived from other data)
+DATASETS = {
+    "klines": f"data/futures/um/daily/klines/{SYMBOL}/{INTERVAL}/",
+    "aggTrades": f"data/futures/um/daily/aggTrades/{SYMBOL}/",
+    "bookDepth": f"data/futures/um/daily/bookDepth/{SYMBOL}/",
+    "markPriceKlines": f"data/futures/um/daily/markPriceKlines/{SYMBOL}/{INTERVAL}/",
+}
+# =======================================
+
+
+def get_dataset_dir(dataset_name):
+    """Get local directory for a dataset"""
+    return os.path.join(BASE_DATA_DIR, dataset_name)
+
+
+def get_latest_csv_date(dataset_name):
+    """Get the latest date from existing CSV files for a dataset"""
+    data_dir = get_dataset_dir(dataset_name)
+    csv_files = glob.glob(os.path.join(data_dir, "*.csv"))
     if not csv_files:
         return None
     
@@ -35,17 +56,16 @@ def get_latest_local_date():
     return max(dates) if dates else None
 
 
-def list_remote_files():
-    """List all files from Binance S3"""
+def list_remote_files(prefix):
+    """List all .zip files from Binance S3 for a given prefix"""
     files = []
     marker = ""
     
     while True:
-        url = f"{BASE}/?prefix={PREFIX}&delimiter=/"
+        url = f"{BASE}/?prefix={prefix}&delimiter=/"
         if marker:
             url += f"&marker={marker}"
         
-        print(f"Listing: {url}")
         resp = requests.get(url, timeout=30)
         root = ET.fromstring(resp.text)
         
@@ -76,103 +96,151 @@ def extract_date_from_key(key):
     return None
 
 
-def download_and_extract(key):
-    """Download a zip file and extract the CSV"""
+def download_and_extract(key, output_dir):
+    """Download a zip file and extract the CSV to output_dir"""
+    os.makedirs(output_dir, exist_ok=True)
+    
     filename = key.split("/")[-1]
-    zip_path = os.path.join(DATA_DIR, filename)
+    zip_path = os.path.join(output_dir, filename)
     csv_filename = filename.replace(".zip", ".csv")
-    csv_path = os.path.join(DATA_DIR, csv_filename)
+    csv_path = os.path.join(output_dir, csv_filename)
     url = f"{BASE}/{key}"
     
     # Skip if CSV already exists
     if os.path.exists(csv_path):
-        print(f"  [SKIP] {csv_filename} already exists")
-        return True
+        return "skip"
     
-    print(f"  [DOWNLOADING] {filename}")
     try:
-        with requests.get(url, stream=True, timeout=30) as r:
+        with requests.get(url, stream=True, timeout=(10, 300)) as r:
             if r.status_code != 200:
-                print(f"  [ERROR] status {r.status_code}")
-                return False
+                print(f"    [ERROR] status {r.status_code}")
+                return "error"
             with open(zip_path, "wb") as f:
                 for chunk in r.iter_content(chunk_size=CHUNK):
                     if chunk:
                         f.write(chunk)
         
         # Extract CSV from zip
-        print(f"  [EXTRACTING] {filename}")
         with zipfile.ZipFile(zip_path, 'r') as zf:
-            zf.extractall(DATA_DIR)
+            zf.extractall(output_dir)
         
-        # Remove zip file
-        os.remove(zip_path)
-        print(f"  [OK] {csv_filename}")
-        return True
+        return "ok"
         
     except Exception as e:
-        print(f"  [FAILED] {filename}: {e}")
+        print(f"    [FAILED] {filename}: {e}")
+        return "error"
+    finally:
+        # Always clean up zip file
         if os.path.exists(zip_path):
             os.remove(zip_path)
-        return False
+
+
+def process_dataset(dataset_name, prefix):
+    """Process a single dataset: list, filter, download"""
+    print(f"\n{'='*50}")
+    print(f"Dataset: {dataset_name}")
+    print(f"{'='*50}")
+    
+    output_dir = get_dataset_dir(dataset_name)
+    
+    # Get latest date from CSV files only
+    latest_csv = get_latest_csv_date(dataset_name)
+    
+    if latest_csv:
+        print(f"✓ Latest CSV: {latest_csv}")
+    print(f"✓ Only fetching data from: {MIN_DATE} ({MONTHS_OF_DATA} months)")
+    
+    # List remote files
+    print(f"Fetching file list from S3...")
+    remote_files = list_remote_files(prefix)
+    print(f"✓ Found {len(remote_files)} files on Binance")
+    
+    # Filter: must be >= MIN_DATE and newer than what we have locally
+    new_files = []
+    all_dates = []
+    for key in remote_files:
+        file_date = extract_date_from_key(key)
+        if file_date:
+            all_dates.append(file_date)
+        if file_date and file_date >= MIN_DATE:
+            # Skip if we already have this file
+            if latest_csv and file_date <= latest_csv:
+                continue
+            new_files.append(key)
+    
+    # Debug: show date range found
+    if all_dates:
+        print(f"  (Remote files range: {min(all_dates)} to {max(all_dates)})")
+    
+    if not new_files:
+        print("✓ Already up to date!")
+        return 0
+    
+    print(f"{len(new_files)} new files to download")
+    print("-" * 50)
+    
+    # Download and extract new files in parallel
+    success_count = 0
+    skip_count = 0
+    error_count = 0
+    completed = 0
+    total = len(new_files)
+    
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(download_and_extract, key, output_dir): key for key in sorted(new_files)}
+        for future in as_completed(futures):
+            key = futures[future]
+            filename = key.split("/")[-1]
+            completed += 1
+            try:
+                result = future.result()
+                if result == "ok":
+                    success_count += 1
+                    print(f"[{completed}/{total}] {filename} ✓")
+                elif result == "skip":
+                    skip_count += 1
+                else:
+                    error_count += 1
+                    print(f"[{completed}/{total}] {filename} ✗")
+            except Exception as e:
+                error_count += 1
+                print(f"[{completed}/{total}] {filename} ✗ {e}")
+    
+    print("-" * 50)
+    print(f"✓ Downloaded {success_count} new files ({skip_count} skipped, {error_count} errors)")
+    
+    return success_count
 
 
 def main():
-    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(BASE_DATA_DIR, exist_ok=True)
     
-    print("=" * 50)
-    print("Binance BTCUSDT 1m Data Updater")
-    print("=" * 50)
+    print("=" * 60)
+    print(f"  Binance {SYMBOL} USD-M Futures Data Updater")
+    print("=" * 60)
     
-    # Get latest local date
-    latest_local = get_latest_local_date()
-    if latest_local:
-        print(f"\n✓ Latest local data: {latest_local}")
-    else:
-        print("\n✓ No local data found, downloading all")
+    total_new = 0
     
-    # List remote files
-    print("\nFetching file list from Binance S3...")
-    remote_files = list_remote_files()
-    print(f"✓ Found {len(remote_files)} files on Binance")
+    # Process each dataset
+    for dataset_name, prefix in DATASETS.items():
+        new_count = process_dataset(dataset_name, prefix)
+        total_new += new_count
     
-    # Filter to only newer files
-    if latest_local:
-        new_files = []
-        for key in remote_files:
-            file_date = extract_date_from_key(key)
-            if file_date and file_date > latest_local:
-                new_files.append(key)
-    else:
-        new_files = remote_files
+    # Summary
+    print(f"\n{'='*60}")
+    print(f"  Summary: {total_new} total new files downloaded")
+    print(f"{'='*60}")
     
-    if not new_files:
-        print("\n✓ Already up to date!")
-        return
-    
-    print(f"\n{len(new_files)} new files to download")
-    print("-" * 50)
-    
-    # Download and extract new files
-    success_count = 0
-    for i, key in enumerate(sorted(new_files), 1):
-        print(f"[{i}/{len(new_files)}] {key.split('/')[-1]}")
-        if download_and_extract(key):
-            success_count += 1
-        sleep(0.05)  # Be nice to S3
-    
-    print("-" * 50)
-    print(f"\n✓ Downloaded {success_count}/{len(new_files)} files")
-    
-    # Run import script
-    if success_count > 0:
+    # Run import script if any new data was downloaded
+    if total_new > 0:
         print("\nImporting new data into TimescaleDB...")
         print("=" * 50)
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        import_script = os.path.join(script_dir, "import_klines.py")
+        import_script = os.path.join(script_dir, "import_data.py")
         subprocess.run(["python3", import_script])
+    else:
+        print("\nNo new data to import.")
 
 
 if __name__ == "__main__":
     main()
-

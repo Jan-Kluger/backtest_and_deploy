@@ -11,7 +11,7 @@ int main() {
     }
 
     PGresult* res = PQexec(conn,
-        "SELECT open_time, close FROM btcusdt_1m ORDER BY open_time DESC LIMIT 1");
+        "SELECT ts, close FROM btcusdt_1m ORDER BY ts DESC LIMIT 1");
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
         std::cerr << "Query failed: " << PQerrorMessage(conn) << std::endl;
