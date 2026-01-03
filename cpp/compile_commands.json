@@ -1,0 +1,19 @@
+[
+ {
+  "directory": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp",
+  "arguments": [
+   "clang++",
+   "-std=c++20",
+   "-Wall",
+   "-Wextra",
+   "-O2",
+   "-I/opt/homebrew/opt/libpq/include",
+   "-o",
+   "price",
+   "main.cpp",
+   "-lpq",
+   "-L/opt/homebrew/opt/libpq/lib"
+  ],
+  "file": "main.cpp"
+ }
+]
