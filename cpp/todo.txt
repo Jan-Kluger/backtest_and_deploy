@@ -1,0 +1,9 @@
+build out general structure
+
+use pybind 11 to makea cpp interface with python
+
+make cpp backtesting stuff -> more to come
+
+make database sed variable (easy)
+
+performance
