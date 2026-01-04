@@ -1,23 +1,27 @@
-CXX = clang++
-CXXFLAGS = -std=c++20 -Wall -Wextra -O2
-LDFLAGS = -lpq
+BUILD_DIR := _build
 
-# Homebrew paths for libpq
-CXXFLAGS += -I/opt/homebrew/opt/libpq/include
-LDFLAGS += -L/opt/homebrew/opt/libpq/lib
+.PHONY: all build configure configure_lsp compilecommands post_build clean
 
-TARGET = price
-SRC = main.cpp
+all: build
 
-all: $(TARGET)
+build: configure
+	cmake --build $(BUILD_DIR)
+	$(MAKE) post_build
 
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
+compilecommands: configure_lsp
+	cmake --build $(BUILD_DIR)
+	$(MAKE) post_build
+	ln -sf $(BUILD_DIR)/compile_commands.json compile_commands.json
+
+configure:
+	cmake -S . -B $(BUILD_DIR)
+
+configure_lsp:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+post_build:
+	cp example.py $(BUILD_DIR)
 
 clean:
-	rm -f $(TARGET)
-
-.PHONY: all clean
-
-
+	rm -rf $(BUILD_DIR) compile_commands.json
 

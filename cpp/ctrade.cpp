@@ -1,7 +1,8 @@
 #include <iostream>
 #include <libpq-fe.h>
+#include <stdexcept>
 
-int main() {
+double get_most_recent_price() {
   PGconn *conn = PQconnectdb("host=localhost dbname=ctrade");
 
   if (PQstatus(conn) != CONNECTION_OK) {
@@ -20,12 +21,16 @@ int main() {
     return 1;
   }
 
-  if (PQntuples(res) > 0) {
-    std::cout << PQgetvalue(res, 0, 0) << " " << PQgetvalue(res, 0, 1)
-              << std::endl;
+  if (PQntuples(res) == 0) {
+    PQclear(res);
+    PQfinish(conn);
+    throw std::runtime_error("No rows returned");
   }
+
+  double price = std::stod(PQgetvalue(res, 0, 1));
 
   PQclear(res);
   PQfinish(conn);
-  return 0;
+
+  return price;
 }
