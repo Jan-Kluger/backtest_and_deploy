@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build",
+  "command": "/usr/bin/clang++ -D_ctrade_EXPORTS -I/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/include -I/opt/homebrew/include/postgresql@17 -I/opt/homebrew/include/postgresql@17/server -isystem /opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -isystem /opt/homebrew/include -std=c++20 -arch arm64 -fPIC -fvisibility=hidden -Wall -Wextra -O2 -flto -o CMakeFiles/_ctrade.dir/bindings/bindings.cpp.o -c /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/bindings/bindings.cpp",
+  "file": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/bindings/bindings.cpp",
+  "output": "CMakeFiles/_ctrade.dir/bindings/bindings.cpp.o"
+},
+{
+  "directory": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build",
+  "command": "/usr/bin/clang++ -D_ctrade_EXPORTS -I/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/include -I/opt/homebrew/include/postgresql@17 -I/opt/homebrew/include/postgresql@17/server -isystem /opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -isystem /opt/homebrew/include -std=c++20 -arch arm64 -fPIC -fvisibility=hidden -Wall -Wextra -O2 -flto -o CMakeFiles/_ctrade.dir/src/backtest.cpp.o -c /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/backtest.cpp",
+  "file": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/backtest.cpp",
+  "output": "CMakeFiles/_ctrade.dir/src/backtest.cpp.o"
+},
+{
+  "directory": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build",
+  "command": "/usr/bin/clang++ -D_ctrade_EXPORTS -I/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/include -I/opt/homebrew/include/postgresql@17 -I/opt/homebrew/include/postgresql@17/server -isystem /opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -isystem /opt/homebrew/include -std=c++20 -arch arm64 -fPIC -fvisibility=hidden -Wall -Wextra -O2 -flto -o CMakeFiles/_ctrade.dir/src/execution_context.cpp.o -c /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/execution_context.cpp",
+  "file": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/execution_context.cpp",
+  "output": "CMakeFiles/_ctrade.dir/src/execution_context.cpp.o"
+},
+{
+  "directory": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build",
+  "command": "/usr/bin/clang++ -D_ctrade_EXPORTS -I/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/include -I/opt/homebrew/include/postgresql@17 -I/opt/homebrew/include/postgresql@17/server -isystem /opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -isystem /opt/homebrew/include -std=c++20 -arch arm64 -fPIC -fvisibility=hidden -Wall -Wextra -O2 -flto -o CMakeFiles/_ctrade.dir/src/execution_engine.cpp.o -c /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/execution_engine.cpp",
+  "file": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/execution_engine.cpp",
+  "output": "CMakeFiles/_ctrade.dir/src/execution_engine.cpp.o"
+},
+{
+  "directory": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build",
+  "command": "/usr/bin/clang++ -D_ctrade_EXPORTS -I/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/include -I/opt/homebrew/include/postgresql@17 -I/opt/homebrew/include/postgresql@17/server -isystem /opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -isystem /opt/homebrew/include -std=c++20 -arch arm64 -fPIC -fvisibility=hidden -Wall -Wextra -O2 -flto -o CMakeFiles/_ctrade.dir/src/portfolio.cpp.o -c /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/portfolio.cpp",
+  "file": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/portfolio.cpp",
+  "output": "CMakeFiles/_ctrade.dir/src/portfolio.cpp.o"
+},
+{
+  "directory": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build",
+  "command": "/usr/bin/clang++ -D_ctrade_EXPORTS -I/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/include -I/opt/homebrew/include/postgresql@17 -I/opt/homebrew/include/postgresql@17/server -isystem /opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -isystem /opt/homebrew/include -std=c++20 -arch arm64 -fPIC -fvisibility=hidden -Wall -Wextra -O2 -flto -o CMakeFiles/_ctrade.dir/src/market_data.cpp.o -c /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/market_data.cpp",
+  "file": "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/market_data.cpp",
+  "output": "CMakeFiles/_ctrade.dir/src/market_data.cpp.o"
+}
+]

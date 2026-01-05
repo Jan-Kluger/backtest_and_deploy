@@ -2,7 +2,7 @@
 
 double get_most_recent_price();
 
-PYBIND11_MODULE(ctrade, m) {
+PYBIND11_MODULE(_ctrade, m) {
   m.doc() = "Minimal C++ Python bindings for ctrade";
 
   m.def("get_most_recent_price", &get_most_recent_price,

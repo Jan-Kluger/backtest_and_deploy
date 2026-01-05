@@ -1,0 +1,3 @@
+/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/CMakeFiles/_ctrade.dir
+/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/CMakeFiles/edit_cache.dir
+/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/CMakeFiles/rebuild_cache.dir
