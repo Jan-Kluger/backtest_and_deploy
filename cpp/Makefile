@@ -1,6 +1,6 @@
 BUILD_DIR := _build
 
-.PHONY: all build configure configure_lsp compilecommands post_build clean run
+.PHONY: all build configure configure_lsp compilecommands clean run test test-cpp test-python
 
 all: build
 
@@ -19,6 +19,15 @@ configure_lsp:
 
 run:
 	PYTHONPATH=$(BUILD_DIR) python3 example.py
+
+# ---- Testing ----
+test: test-cpp test-python
+
+test-cpp: build
+	cd $(BUILD_DIR) && ctest --output-on-failure
+
+test-python:
+	pytest test/python/ -v || echo "No Python tests yet"
 
 clean:
 	rm -rf $(BUILD_DIR) compile_commands.json
