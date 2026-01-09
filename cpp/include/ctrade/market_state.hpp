@@ -4,6 +4,7 @@
 namespace ctrade {
 
 struct MarketState {
+  int asset_id;  // Runtime asset identifier (0 = BTCUSDT for now)
   int64_t timestamp;
 
   double open;

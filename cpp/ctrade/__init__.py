@@ -1,3 +1,21 @@
-from ._ctrade import get_most_recent_price
+"""ctrade - Research-grade backtesting engine."""
 
-__all__ = ["get_most_recent_price"]
+from ._ctrade import (
+    Strategy,
+    BacktestConfig,
+    BacktestResult,
+    MarketState,
+    DatabaseConfig,
+    ExecutionContext,
+    backtest,
+)
+
+__all__ = [
+    "Strategy",
+    "BacktestConfig",
+    "BacktestResult",
+    "MarketState",
+    "DatabaseConfig",
+    "ExecutionContext",
+    "backtest",
+]
