@@ -156,6 +156,20 @@ CMakeFiles/_ctrade.dir/src/market_data.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/_ctrade.dir/src/market_data.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/market_data.cpp -o CMakeFiles/_ctrade.dir/src/market_data.cpp.s
 
+CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o: CMakeFiles/_ctrade.dir/flags.make
+CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o: /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/postgres_market_data.cpp
+CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o: CMakeFiles/_ctrade.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o -MF CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o.d -o CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o -c /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/postgres_market_data.cpp
+
+CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/postgres_market_data.cpp > CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.i
+
+CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/postgres_market_data.cpp -o CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.s
+
 # Object files for target _ctrade
 _ctrade_OBJECTS = \
 "CMakeFiles/_ctrade.dir/bindings/bindings.cpp.o" \
@@ -163,7 +177,8 @@ _ctrade_OBJECTS = \
 "CMakeFiles/_ctrade.dir/src/execution_context.cpp.o" \
 "CMakeFiles/_ctrade.dir/src/execution_engine.cpp.o" \
 "CMakeFiles/_ctrade.dir/src/portfolio.cpp.o" \
-"CMakeFiles/_ctrade.dir/src/market_data.cpp.o"
+"CMakeFiles/_ctrade.dir/src/market_data.cpp.o" \
+"CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o"
 
 # External object files for target _ctrade
 _ctrade_EXTERNAL_OBJECTS =
@@ -174,10 +189,11 @@ _ctrade_EXTERNAL_OBJECTS =
 /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so: CMakeFiles/_ctrade.dir/src/execution_engine.cpp.o
 /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so: CMakeFiles/_ctrade.dir/src/portfolio.cpp.o
 /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so: CMakeFiles/_ctrade.dir/src/market_data.cpp.o
+/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so: CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o
 /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so: CMakeFiles/_ctrade.dir/build.make
 /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so: /opt/homebrew/lib/postgresql@17/libpq.dylib
 /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so: CMakeFiles/_ctrade.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX shared module /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX shared module /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/_ctrade.dir/link.txt --verbose=$(VERBOSE)
 	/usr/bin/strip -x /Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/ctrade/_ctrade.cpython-314-darwin.so
 

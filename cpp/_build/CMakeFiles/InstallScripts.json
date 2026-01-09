@@ -1,7 +1,10 @@
 {
 	"InstallScripts" : 
 	[
-		"/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/cmake_install.cmake"
+		"/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/cmake_install.cmake",
+		"/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/_deps/catch2-build/cmake_install.cmake",
+		"/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/_deps/catch2-build/src/cmake_install.cmake",
+		"/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/_build/test/cpp/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

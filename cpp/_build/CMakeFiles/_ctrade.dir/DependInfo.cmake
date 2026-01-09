@@ -14,6 +14,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/execution_engine.cpp" "CMakeFiles/_ctrade.dir/src/execution_engine.cpp.o" "gcc" "CMakeFiles/_ctrade.dir/src/execution_engine.cpp.o.d"
   "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/market_data.cpp" "CMakeFiles/_ctrade.dir/src/market_data.cpp.o" "gcc" "CMakeFiles/_ctrade.dir/src/market_data.cpp.o.d"
   "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/portfolio.cpp" "CMakeFiles/_ctrade.dir/src/portfolio.cpp.o" "gcc" "CMakeFiles/_ctrade.dir/src/portfolio.cpp.o.d"
+  "/Users/yannick/Documents/cpp_project/backtest_and_deploy/cpp/src/postgres_market_data.cpp" "CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o" "gcc" "CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

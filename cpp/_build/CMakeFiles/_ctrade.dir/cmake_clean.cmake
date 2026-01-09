@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/_ctrade.dir/src/market_data.cpp.o.d"
   "CMakeFiles/_ctrade.dir/src/portfolio.cpp.o"
   "CMakeFiles/_ctrade.dir/src/portfolio.cpp.o.d"
+  "CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o"
+  "CMakeFiles/_ctrade.dir/src/postgres_market_data.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.
