@@ -61,4 +61,4 @@ ctrade/_ctrade*.so
 **/.cache/
 *.idx
 
-data.zip
+data_btc.zip
