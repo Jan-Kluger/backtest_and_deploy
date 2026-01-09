@@ -40,4 +40,25 @@
 # debug information files
 *.dwo
 
+# CMake build directories
+_build/
+build/
+cpp/_build/
+cpp/build/
+**/build/
+**/_build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+ctrade/_ctrade*.so
+
+# IDE/Editor cache
+.cache/
+**/.cache/
+*.idx
+
 data.zip
